@@ -1,0 +1,49 @@
+@keyframes checked {
+  20% { padding-left: 2px; }
+  20% { padding-left: 0px; }
+  80% { padding-left: 20px; background: #3ddc84 }
+  100% { padding-left: 18px; background: #3ddc84 }
+}
+
+@keyframes unchecked {
+  0% { padding-left: 18px; }
+  20% { padding-left: 20px; }
+  80% { padding-left: 0px; background: #dc3d3d }
+  100% { padding-left: 2px; background: #dc3d3d }
+}
+
+.filter-checkbox {
+  margin: 14px 0;
+}
+
+.filter-checkbox__input {
+  display: none;
+}
+
+.filter-checkbox__switch {
+  cursor: pointer;
+  box-sizing: border-box;
+  padding: 2px;
+  border-radius: 20px;
+  background: #dc3d3d;
+  height: 20px;
+  width: 36px;
+  animation: unchecked .4s forwards;
+}
+
+.filter-checkbox__input:checked + .filter-checkbox__switch{
+  animation: checked .4s forwards;
+}
+
+.filter-checkbox__slider {
+  background: #fff;
+  height: 16px;
+  width: 16px;
+  border-radius: 50px;
+}
+
+@media screen and (max-width: 768px) {
+  .filter-checkbox {
+    margin: 37px 0;
+  }
+}

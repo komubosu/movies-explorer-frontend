@@ -1,0 +1,40 @@
+.navigation-tabs {
+  background: #272727;
+}
+
+.navigation-tabs__list {
+  height: 66px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navigation-tabs__list_item {
+  margin: 0 20px;
+}
+
+.navigation-tabs__list_link {
+  color: #fff;
+  text-align: center;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+  transition: opacity .2s linear;
+}
+
+.navigation-tabs__list_link:hover {
+  opacity: 0.7;
+}
+
+@media screen and (max-width: 550px) {
+  .navigation-tabs__list_item {
+    margin: 0 12px;
+  }
+
+  .navigation-tabs__list_link {
+    font-size: 11px;
+  }
+}

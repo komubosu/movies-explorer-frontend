@@ -1,0 +1,120 @@
+.technologies {
+  background: #272727;
+  padding: 100px 70px;
+}
+
+.technologies__title {
+  font-weight: 400;
+  padding-bottom: 23px;
+  margin: 0;
+  margin-bottom: 90px;
+  border-bottom: solid 1px #dadada;
+  color: #fff;
+  font-size: 22px;
+  line-height: 27px;
+  letter-spacing: -0.04em;
+}
+
+.technologies__subtitle {
+  margin: 0;
+  color: #fff;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 58px;
+  letter-spacing: -0.04em;
+  text-align: center;
+}
+
+.technologies__text {
+  padding: 26px 0 100px;
+  margin: 0 auto 0;
+  max-width: 460px;
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.04em;
+  text-align: center;
+}
+
+.technologies__list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: grid;
+  grid-template: 60px / repeat(7, 90px);
+  gap: 10px;
+  justify-content: center;
+}
+
+.technologies__item {
+  box-sizing: border-box;
+  height: 60px;
+  width: 90px;
+  padding-top: 21px;
+  background: #303030;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: -0.04em;
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  .technologies {
+    padding: 90px 50px;
+  }
+
+  .technologies__title {
+    margin-bottom: 80px;
+  }
+
+  .technologies__text {
+    padding: 22px 0 83px;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .technologies__list {
+    grid-template: repeat(auto-fit, 57px) / repeat(auto-fit, 84px);
+    gap: 10px;
+  }
+
+  .technologies__item {
+    height: 57px;
+    width: 84px;
+    padding-top: 21px;
+    font-size: 12px;
+    line-height: 15px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .technologies {
+    padding: 70px 18px;
+  }
+
+  .technologies__title {
+    font-weight: 400;
+    padding-bottom: 28px;
+    margin-bottom: 60px;
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .technologies__list {
+    margin: 0 53px;
+  }
+
+  .technologies__subtitle {
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  .technologies__text {
+    padding: 24px 0 50px;
+    font-size: 11px;
+    line-height: 16px;
+  }
+}
