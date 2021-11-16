@@ -1,0 +1,60 @@
+.chart {
+  display: grid;
+  grid-template: repeat(2, 36px) / 1fr 4fr;
+}
+
+.chart__timeline {
+  height: 36px;
+}
+
+.chart__timeline_theme_green {
+  background: #3ddc84;
+}
+
+.chart__timeline_theme_grey {
+  background: #303030;
+  color: #fff;
+}
+
+.chart__text {
+  margin: 0;
+  padding: 9px 0;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+}
+
+.chart__subtitle {
+  margin: 0;
+  padding-top: 14px;
+  color: #8b8b8b;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  .chart__subtitle {
+    font-weight: 400;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .chart {
+    grid-template: repeat(2, 35px) / 1fr 1.84fr;
+  }
+
+  .chart__text {
+    padding: 11px 0;
+    font-size: 11px;
+    line-height: 13px;
+  }
+
+  .chart__subtitle {
+    padding-top: 10px;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+  }
+}

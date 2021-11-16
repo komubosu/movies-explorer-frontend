@@ -1,0 +1,144 @@
+.header {
+  box-sizing: border-box;
+  margin: auto;
+  background: #073042;
+  max-width: 1280px;
+  height: 74px;
+  padding: 0 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header_theme_grey {
+  background: #202020;
+}
+
+.header__link {
+  padding: 0;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  transition: opacity .2s linear;
+}
+
+.header__link:first-of-type {
+  padding-right: 16px;
+  padding-left: 62px;
+}
+
+.header__link:hover {
+  opacity: 0.7;
+}
+
+.header__link_active {
+  font-weight: 500;
+}
+
+.header__button-profile {
+  cursor: pointer;
+  background: none;
+  background: url(../../images/header__button-profile__img.svg) no-repeat center left 12px;
+  height: 32px;
+  width: 100px;
+  padding: 0;
+  padding-right: 10px;
+  border: solid 2px #aaa;
+  border-radius: 50px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: right;
+  transition: opacity .2s linear;
+}
+
+.header__button-profile:hover {
+  opacity: 0.7;
+}
+
+.header__button-signup {
+  cursor: pointer;
+  padding: 0;
+  margin-right: 30px;
+  background: none;
+  border: none;
+  color: #fff;
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: right;
+  font-weight: 500;
+  transition: opacity .2s linear;
+}
+
+.header__button-signup:hover {
+  opacity: 0.7;
+}
+
+.header__button-signin {
+  cursor: pointer;
+  padding: 0;
+  background: #3DDC84;
+  border: none;
+  border-radius: 3px;
+  height: 32px;
+  width: 76px;
+  color: #000;
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  font-weight: 500;
+  transition: opacity .2s linear;
+}
+
+.header__button-signin:hover {
+  opacity: 0.7;
+}
+
+.header__button-menu {
+  display: none;
+  cursor: pointer;
+  border: none;
+  background: url(../../images/header__button-menu__img.svg) no-repeat center;
+  height: 44px;
+  width: 44px;
+}
+
+@media screen and (max-width: 768px) {
+  .header {
+    padding: 0 30px;
+  }
+
+  .header__link {
+    display: none;
+  }
+
+  .header__button-profile {
+    display: none;
+  }
+
+  .header__button-menu {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .header {
+    padding: 0 14px;
+  }
+
+  .header__button-signup {
+    font-size: 10px;
+    margin-right: 14px;
+  }
+
+  .header__button-signin {
+    height: 26px;
+    width: 54px;
+    font-size: 10px;
+  }
+}
