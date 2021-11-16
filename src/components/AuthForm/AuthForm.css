@@ -46,8 +46,12 @@
   margin-bottom: 10px;
 }
 
+.auth-form__input:hover {
+  outline: 1px solid #aaa;
+}
+
 .auth-form__input:focus {
-  outline: none;
+  outline: 2px solid #aaa;
 }
 
 .auth-form__input-err {

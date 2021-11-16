@@ -5,7 +5,7 @@ function SearchForm(params) {
   return (
     <form className="search-form">
       <div className="search-form__field">
-        <input className="search-form__input" placeholder="Фильмы" />
+        <input className="search-form__input" placeholder="Фильмы" required />
         <button className="search-form__button"></button>
       </div>
       <p className="search-form__text">Короткометражки</p>

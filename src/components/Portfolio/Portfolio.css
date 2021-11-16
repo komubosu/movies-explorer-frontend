@@ -77,4 +77,10 @@
     font-size: 18px;
     line-height: 28px;
   }
+
+  .portfolio__button:hover {
+    padding-left: 20px;
+    background: #424242 url(../../images/portfolio__button__img.svg) no-repeat right 20px top 27px / 11px;
+    opacity: .7;
+  }
 }
