@@ -25,20 +25,32 @@
   font-size: 14px;
   line-height: 18px;
   color: #fff;
+  transition: border .2s linear;
 }
 
-.search-form__input:focus {
-  outline: none;
+.search-form__input:hover {
   border: 2px solid #fff;
   border-right: none;
 }
 
-.search-form__input:focus + .search-form__button {
+.search-form__input:hover + .search-form__button {
   border: 2px solid #fff;
   border-left: none;
 }
 
+.search-form__input:focus {
+  outline: none;
+  border: 3px solid #fff;
+  border-right: none;
+}
+
+.search-form__input:focus + .search-form__button {
+  border: 3px solid #fff;
+  border-left: none;
+}
+
 .search-form__button {
+  box-sizing: border-box;
   cursor: pointer;
   padding: 0;
   height: 48px;
@@ -47,7 +59,7 @@
   border: 1.5px solid #aaa;
   border-radius: 0 50px 50px 0;
   border-left: none;
-  transition: background .2s linear;
+  transition: background .2s linear, border .2s linear;
 }
 
 .search-form__button:hover {
