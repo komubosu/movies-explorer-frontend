@@ -4,8 +4,8 @@ import logo from '../../images/logo.svg';
 
 function AuthForm({
   onSubmit,
+  isValid,
   title,
-  errorMessage,
   buttonClasses,
   buttonText,
   questionText,
@@ -14,12 +14,11 @@ function AuthForm({
   children,
 }) {
   return (
-    <form className="auth-form" onSubmit={onSubmit}>
+    <form className="auth-form" onSubmit={onSubmit} noValidate>
       <Link to="/"><img className="auth-form__logo" src={logo} alt="Логотип"></img></Link>
       <h1 className="auth-form__title">{title}</h1>
       {children}
-      <span className="auth-form__error-message">{errorMessage}</span>
-      <button className={buttonClasses}>{buttonText}</button>
+      <button className={buttonClasses} disabled={!isValid}>{buttonText}</button>
       <p className="auth-form__text">{questionText} <span><Link className="auth-form__link" to={linkPath}>{linkText}</Link></span></p>
     </form>
   );

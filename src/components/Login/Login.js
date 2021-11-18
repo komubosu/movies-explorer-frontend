@@ -2,24 +2,26 @@ import AuthForm from '../AuthForm/AuthForm';
 import React from 'react';
 
 function Login(params) {
-  const [ formValues, setFormValues ] = React.useState({
-    email: 'pochta@yandex.ru',
-    password: '',
-  });
+  const [ values, setValues ] = React.useState({});
+  const [ errors, setErrors ] = React.useState({});
+  const [ isValid, setIsValid ] = React.useState(false);
 
-  const handleChangeValues = (e) => {
-    setFormValues({
-      email: (e.target.name === 'email' ? e.target.value : formValues.email),
-      password: (e.target.name === 'password' ? e.target.value : formValues.password),
-    });
+  const handleChange = (e) => {
+    const target = e.target;
+    const name = target.name;
+    const value = target.value;
+    setValues({ ...value, [name]: value });
+    setErrors({ ...errors, [name]: target.validationMessage });
+    setIsValid(target.closest('form').checkValidity());
   };
 
   return (
     <section className="login">
       <AuthForm
+        onSubmit=""
+        isValid={isValid}
         title="Рады видеть!"
-        errorMessage={''}
-        buttonClasses="auth-form__button auth-form__button_type_login"
+        buttonClasses={`auth-form__button auth-form__button_type_login ${isValid ? '' : 'auth-form__button-disabled'}`}
         buttonText="Войти"
         questionText="Ещё не зарегистрированны?"
         linkText="Регистрация"
@@ -27,24 +29,26 @@ function Login(params) {
       >
         <label className="auth-form__label" for="email">E-mail</label>
         <input
-          className="auth-form__input"
-          onChange={handleChangeValues}
-          value={formValues.email}
+          className={`auth-form__input ${errors.email ? 'auth-form__input-err' : ''}`}
+          onChange={handleChange}
+          value={values.email}
           name="email"
           id="email"
           type="email"
           required
         />
+        <span className="auth-form__error-message">{errors.email}</span>
         <label className="auth-form__label" for="password">Пароль</label>
         <input
-          className="auth-form__input auth-form__input-err"
-          onChange={handleChangeValues}
-          value={formValues.password}
+          className={`auth-form__input ${errors.password ? 'auth-form__input-err' : ''}`}
+          onChange={handleChange}
+          value={values.password}
           name="password"
           id="password"
           type="password"
           required
         />
+        <span className="auth-form__error-message">{errors.password}</span>
       </AuthForm>
     </section>
   );

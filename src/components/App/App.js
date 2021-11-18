@@ -15,12 +15,12 @@ import NavPopup from '../NavPopup/NavPopup';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 
 function App() {
-  const [ loggedIn, setLoggedIn ] = React.useState(true);
+  const [ loggedIn, setLoggedIn ] = React.useState(false);
   const [ isNavPopupOpen, setIsNavPopupOpen ] = React.useState(false);
   const [ currentUser, setCurrentUser ] = React.useState({
     name: 'Михаил',
     email: 'pochta@yandex.ru',
-  })
+  });
 
   const handleUpdateUser = (newUserInfo) => {
     setCurrentUser(newUserInfo);
@@ -32,7 +32,7 @@ function App() {
 
   const closeNavPopupPopup = () => {
     setIsNavPopupOpen(false);
-  }
+  };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
