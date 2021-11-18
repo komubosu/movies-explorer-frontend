@@ -1,7 +1,9 @@
 import AuthForm from '../AuthForm/AuthForm';
 import React from 'react';
 
-function Login(params) {
+function Login({ onLogin }) {
+  const [ buttonText, setButtonText] = React.useState('Войти');
+  const [ errorText, setErrorText ] = React.useState('');
   const [ values, setValues ] = React.useState({});
   const [ errors, setErrors ] = React.useState({});
   const [ isValid, setIsValid ] = React.useState(false);
@@ -10,19 +12,36 @@ function Login(params) {
     const target = e.target;
     const name = target.name;
     const value = target.value;
-    setValues({ ...value, [name]: value });
+    setValues({ ...values, [name]: value });
     setErrors({ ...errors, [name]: target.validationMessage });
     setIsValid(target.closest('form').checkValidity());
+  };
+
+  const handleErrorText = (code) => {
+    switch(code) {
+      case 401:
+        setErrorText('Неправильные почта или пароль');
+        break;
+      case 400:
+        setErrorText('Переданы некорректные данные');
+        break;
+      default:
+        setErrorText('Произошла ошибка, попробуйте ещё раз');
+    };
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    onLogin(values, setButtonText, handleErrorText);
   };
 
   return (
     <section className="login">
       <AuthForm
-        onSubmit=""
+        onSubmit={onSubmit}
         isValid={isValid}
         title="Рады видеть!"
-        buttonClasses={`auth-form__button auth-form__button_type_login ${isValid ? '' : 'auth-form__button-disabled'}`}
-        buttonText="Войти"
+        buttonText={buttonText}
         questionText="Ещё не зарегистрированны?"
         linkText="Регистрация"
         linkPath="/sign-up"
@@ -49,6 +68,7 @@ function Login(params) {
           required
         />
         <span className="auth-form__error-message">{errors.password}</span>
+        <span className="auth-form__error-message auth-form__error-message_login">{errorText}</span>
       </AuthForm>
     </section>
   );

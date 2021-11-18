@@ -1,4 +1,4 @@
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import { LoggedInContext } from '../../contexts/LoggedInContext';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import './App.css';
@@ -13,14 +13,35 @@ import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import NavPopup from '../NavPopup/NavPopup';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
+import mainApi from '../../utils/MainApi';
 
 function App() {
   const [ loggedIn, setLoggedIn ] = React.useState(false);
   const [ isNavPopupOpen, setIsNavPopupOpen ] = React.useState(false);
-  const [ currentUser, setCurrentUser ] = React.useState({
-    name: 'Михаил',
-    email: 'pochta@yandex.ru',
-  });
+  const [ currentUser, setCurrentUser ] = React.useState();
+  const history = useHistory();
+
+  const handleRegister = (values, setButtonText, handleErrorText) => {
+    setButtonText('Регистарция...')
+    mainApi.register(values)
+      .then(() => history.push('/sign-in'))
+      .catch(err => {
+        handleErrorText(err.status);
+      })
+      .finally(() => setButtonText('Зарегистрироваться'));
+  };
+
+  const handleLogin = (values, setButtonText, handleErrorText) => {
+    setButtonText('Вход...')
+    mainApi.login(values)
+      .then((userData) => console.log(userData))
+      .then(() => setLoggedIn(true))
+      .then(() => history.push('/movies'))
+      .catch(err => {
+        handleErrorText(err.status);
+      })
+      .finally(() => setButtonText('Войти'));
+  };
 
   const handleUpdateUser = (newUserInfo) => {
     setCurrentUser(newUserInfo);
@@ -40,11 +61,11 @@ function App() {
         <div className="app">
           <Switch>
             <Route path="/sign-up">
-              <Register />
+              <Register onRegister={handleRegister}/>
             </Route>
 
             <Route path="/sign-in">
-              <Login />
+              <Login onLogin={handleLogin}/>
             </Route>
 
             <Route path="/movies">
