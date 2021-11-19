@@ -21,6 +21,13 @@ function App() {
   const [ currentUser, setCurrentUser ] = React.useState();
   const history = useHistory();
 
+  React.useEffect(() => {
+    mainApi.getUserData()
+      .then(userData => setCurrentUser(userData))
+      .then(() => setLoggedIn(true))
+      .catch(err => console.log(err));
+  }, []);
+
   const handleRegister = (values, setButtonText, handleErrorText) => {
     setButtonText('Регистарция...')
     mainApi.register(values)
@@ -34,7 +41,7 @@ function App() {
   const handleLogin = (values, setButtonText, handleErrorText) => {
     setButtonText('Вход...')
     mainApi.login(values)
-      .then((userData) => console.log(userData))
+      .then((userData) => setCurrentUser(userData))
       .then(() => setLoggedIn(true))
       .then(() => history.push('/movies'))
       .catch(err => {

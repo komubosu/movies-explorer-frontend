@@ -11,6 +11,13 @@ class MainApi {
     return Promise.reject(res);
   };
 
+  getUserData() {
+    return fetch(`${this._baseUrl}/users/me`, {
+      headers: this._headers,
+      credentials: 'include',
+    }).then(res => this._checkAnswer(res));
+  };
+
   register({ email, password, name }) {
     return fetch(`${this._baseUrl}/signup`, {
       method: 'POST',
