@@ -39,7 +39,7 @@ function App() {
   };
 
   const handleLogin = (values, setButtonText, handleErrorText) => {
-    setButtonText('Вход...')
+    setButtonText('Вход...');
     mainApi.login(values)
       .then(userData => setCurrentUser(userData))
       .then(() => setLoggedIn(true))
@@ -48,13 +48,22 @@ function App() {
       .finally(() => setButtonText('Войти'));
   };
 
+  const handleLogout = (setLogoutButtonText, handleErrorText) => {
+    setLogoutButtonText('Выход...');
+    mainApi.logout()
+      .then(() => history.push('/'))
+      .then(() => setLoggedIn(false))
+      .catch(err => handleErrorText(err.status))
+      .finally(setLogoutButtonText('Выйти из аккаунта'));
+  };
+
   const handleUpdateUser = (values, setEditButtonText, setStatusText, handleErrorText) => {
     setEditButtonText('Сохранение...')
     mainApi.updateUserData(values)
       .then(userData => setCurrentUser(userData))
       .then(() => setStatusText('Данные успешно обновлены!'))
       .catch(err => handleErrorText(err.status))
-      .finally(() => setEditButtonText('Редактировать'))
+      .finally(() => setEditButtonText('Редактировать'));
   };
 
   const handleNavPopupClick = () => {
@@ -92,7 +101,7 @@ function App() {
 
             <Route path="/profile">
               <Header onMenuClick={handleNavPopupClick} />
-              <Profile onUpdateUser={handleUpdateUser}/>
+              <Profile onUpdateUser={handleUpdateUser} onLogout={handleLogout} />
             </Route>
 
             <Route path="/not-exist-path">

@@ -43,6 +43,13 @@ class MainApi {
       credentials: 'include',
     }).then(res => this._checkAnswer(res));
   };
+
+  logout() {
+    return fetch(`${this._baseUrl}/signout`, {
+      method: 'POST',
+      credentials: 'include',
+    }).then(res => this._checkAnswer(res));
+  };
 };
 
 const mainApi = new MainApi({

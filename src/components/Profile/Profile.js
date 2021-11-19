@@ -3,7 +3,7 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import './Profile.css';
 
 
-function Profile({ onUpdateUser }) {
+function Profile({ onUpdateUser, onLogout }) {
   const currentUser = React.useContext(CurrentUserContext);
   const [ editButtonText, setEditButtonText] = React.useState('Редактировать');
   const [ logoutButtonText, setLogoutButtonText] = React.useState('Выйти из аккаунта');
@@ -33,6 +33,9 @@ function Profile({ onUpdateUser }) {
         break;
       case 400:
         setErrorText('Переданы некорректные данные');
+        break;
+      case 200:
+        setErrorText('');
         break;
       default:
         setErrorText('Произошла ошибка, попробуйте ещё раз');
@@ -88,7 +91,7 @@ function Profile({ onUpdateUser }) {
         <span className="profile__status-message">{statusText}</span>
         <div className="profile__button-field">
           <button className={`profile__button ${isValid ? '' : 'profile__button-disabled'}`}disabled={!isValid}>{editButtonText}</button>
-          <button className="profile__button">{logoutButtonText}</button>
+          <button className="profile__button" onClick={() => onLogout(setLogoutButtonText, handleErrorText)}>{logoutButtonText}</button>
         </div>
       </form>
     </section>
