@@ -44,9 +44,7 @@ function App() {
       .then((userData) => setCurrentUser(userData))
       .then(() => setLoggedIn(true))
       .then(() => history.push('/movies'))
-      .catch(err => {
-        handleErrorText(err.status);
-      })
+      .catch(err => handleErrorText(err.status))
       .finally(() => setButtonText('Войти'));
   };
 
