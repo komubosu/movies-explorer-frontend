@@ -18,6 +18,15 @@ class MainApi {
     }).then(res => this._checkAnswer(res));
   };
 
+  updateUserData({ email, name }) {
+    return fetch(`${this._baseUrl}/users/me`, {
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify({ email, name }),
+      credentials: 'include',
+    }).then(res => this._checkAnswer(res));
+  };
+
   register({ email, password, name }) {
     return fetch(`${this._baseUrl}/signup`, {
       method: 'POST',
