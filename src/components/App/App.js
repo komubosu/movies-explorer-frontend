@@ -1,4 +1,4 @@
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { LoggedInContext } from '../../contexts/LoggedInContext';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import './App.css';
@@ -13,6 +13,7 @@ import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import NavPopup from '../NavPopup/NavPopup';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import mainApi from '../../utils/MainApi';
 
 function App() {
@@ -20,12 +21,15 @@ function App() {
   const [ isNavPopupOpen, setIsNavPopupOpen ] = React.useState(false);
   const [ currentUser, setCurrentUser ] = React.useState();
   const history = useHistory();
+  const { pathname } = useLocation();
 
   React.useEffect(() => {
     mainApi.getUserData()
       .then(userData => setCurrentUser(userData))
       .then(() => setLoggedIn(true))
+      .then(() => history.push('/movies'))
       .catch(err => console.log(err));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleRegister = (values, setButtonText, handleErrorText) => {
@@ -78,7 +82,37 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <LoggedInContext.Provider value={loggedIn}>
         <div className="app">
+          {
+            pathname === '/' ||
+            pathname === '/movies' ||
+            pathname === '/saved-movies' ||
+            pathname === '/profile' ?
+              <Header onMenuClick={handleNavPopupClick} />
+            :
+              ''
+          }
           <Switch>
+            <Route exact path="/">
+              <Main />
+            </Route>
+
+            <ProtectedRoute
+              path="/movies"
+              component={Movies}
+            />
+
+            <ProtectedRoute
+              path="/saved-movies"
+              component={SavedMovies}
+            />
+
+            <ProtectedRoute
+              path="/profile"
+              component={Profile}
+              onUpdateUser={handleUpdateUser}
+              onLogout={handleLogout}
+            />
+
             <Route path="/sign-up">
               <Register onRegister={handleRegister}/>
             </Route>
@@ -87,33 +121,18 @@ function App() {
               <Login onLogin={handleLogin}/>
             </Route>
 
-            <Route path="/movies">
-              <Header onMenuClick={handleNavPopupClick} />
-              <Movies />
-              <Footer />
-            </Route>
-
-            <Route path="/saved-movies">
-              <Header onMenuClick={handleNavPopupClick} />
-              <SavedMovies />
-              <Footer />
-            </Route>
-
-            <Route path="/profile">
-              <Header onMenuClick={handleNavPopupClick} />
-              <Profile onUpdateUser={handleUpdateUser} onLogout={handleLogout} />
-            </Route>
-
-            <Route path="/not-exist-path">
+            <Route>
               <NotFoundPage />
             </Route>
-
-            <Route path="/">
-              <Header onMenuClick={handleNavPopupClick} />
-              <Main />
-              <Footer />
-            </Route>
           </Switch>
+          {
+            pathname === '/' ||
+            pathname === '/movies' ||
+            pathname === '/saved-movies' ?
+              <Footer />
+            :
+              ''
+          }
 
           <NavPopup isOpen={isNavPopupOpen} onClose={closeNavPopupPopup} />
         </div>

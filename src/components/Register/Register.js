@@ -32,6 +32,9 @@ function Register({ onRegister }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
+
+    setErrorText('');
+
     onRegister(values, setButtonText, handleErrorText);
   };
 

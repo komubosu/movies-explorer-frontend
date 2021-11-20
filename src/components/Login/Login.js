@@ -32,6 +32,9 @@ function Login({ onLogin }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
+
+    setErrorText('');
+    
     onLogin(values, setButtonText, handleErrorText);
   };
 

@@ -118,7 +118,7 @@
 }
 
 .profile__button-disabled {
-  cursor: auto;
+  cursor: not-allowed;
   color: #aaa;
 }
 

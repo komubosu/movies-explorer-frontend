@@ -102,7 +102,7 @@
 }
 
 .auth-form__button-disabled {
-  cursor: auto;
+  cursor: not-allowed;
   background: #999;
   color: #000;
 }
