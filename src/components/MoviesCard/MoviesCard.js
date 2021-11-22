@@ -2,14 +2,27 @@ import React from 'react';
 import { useLocation } from 'react-router';
 import './MoviesCard.css';
 
-function MoviesCard({isSaved, onSaveClick}) {
+function MoviesCard({ card, isSaved, onSaveClick }) {
   const { pathname } = useLocation();
 
   return(
     <li className="movies-card">
       <div className="movies-card__text">
-        <p className="movies-card__title">33 слова о дизайне</p>
-        <p className="movies-card__duration">1ч 47м</p>
+        <p className="movies-card__title">{card.nameRU}</p>
+        <p className="movies-card__duration">
+          {
+            `${Math.floor(card.duration / 60) >= 1 ?
+              `${Math.floor(card.duration / 60)} ч`
+                :
+              ''
+              }
+            ${card.duration % 60 >= 1 ?
+              `${card.duration % 60} м`
+                :
+              ''
+            }`
+          }
+        </p>
       </div>
       <button className={
           isSaved ?
@@ -21,7 +34,7 @@ function MoviesCard({isSaved, onSaveClick}) {
             'movies-card__button'
         }
       ></button>
-      <img className="movies-card__img" src={'https://i04.fotocdn.net/s129/a10b0029563aa2e7/public_pin_l/2923413633.jpg'} alt="Обложка фильма"></img>
+      <img className="movies-card__img" src={`https://api.nomoreparties.co${card.image.url}`} alt="Обложка фильма"></img>
     </li>
   );
 };

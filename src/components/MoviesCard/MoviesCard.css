@@ -18,6 +18,12 @@
   font-size: 15px;
   line-height: 18px;
   color: #fff;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 270px;
+  width: 17.5vw;
+  overflow: hidden;
 }
 
 .movies-card__duration {
@@ -56,4 +62,22 @@
   height: calc(100% - 68px);
   object-fit: cover;
   object-position: center;
+}
+
+@media screen and (max-width: 1000px) {
+  .movies-card__title {
+    width: 25vw;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .movies-card__title {
+    width: 65vw;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .movies-card__title {
+    width: 210px;
+  }
 }

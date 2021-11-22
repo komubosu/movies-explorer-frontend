@@ -15,11 +15,16 @@ import NavPopup from '../NavPopup/NavPopup';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import mainApi from '../../utils/MainApi';
+import moviesApi from '../../utils/MoviesApi';
+import moviesFilter from '../../utils/MoviesFilter';
 
 function App() {
   const [ loggedIn, setLoggedIn ] = React.useState(false);
   const [ isNavPopupOpen, setIsNavPopupOpen ] = React.useState(false);
-  const [ currentUser, setCurrentUser ] = React.useState();
+  const [ currentUser, setCurrentUser ] = React.useState({});
+  const [ moviesCards, setMoviesCards ] = React.useState([]);
+  const [ isMoviesLoadings, setIsMoviesLoadings ] = React.useState(false);
+  const [ moviesErrorMessage, setMoviesErrorMessage ] = React.useState('');
   const history = useHistory();
   const { pathname } = useLocation();
 
@@ -29,8 +34,43 @@ function App() {
       .then(() => setLoggedIn(true))
       .then(() => history.push('/movies'))
       .catch(err => console.log(err));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    if (localStorage.getItem('filtered-movies') !== null) {
+      const localFilteredMoviesCards = JSON.parse(localStorage.getItem('filtered-movies'));
+
+      setMoviesCards(localFilteredMoviesCards);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleSearchMovies = (values) => {
+    setMoviesErrorMessage('')
+
+    if (localStorage.getItem('movies') !== null) {
+      handleSearchMoviesFromLocalStorage(values)
+    } else {
+      setIsMoviesLoadings(true);
+      moviesApi.getMovies()
+        .then(res => localStorage.setItem('movies', JSON.stringify(res)))
+        .then(() => handleSearchMoviesFromLocalStorage(values))
+        .catch(() => setMoviesErrorMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'))
+        .finally(() => setIsMoviesLoadings(false));
+    }
+  };
+
+  const handleSearchMoviesFromLocalStorage = (values) => {
+    const localMoviesCards = JSON.parse(localStorage.getItem('movies'));
+
+    const filteredMoviesCards = moviesFilter(values, localMoviesCards);
+
+    setMoviesCards(filteredMoviesCards);
+
+    if (filteredMoviesCards.length === 0) {
+      setMoviesErrorMessage('Ничего не найдено');
+    };
+
+    localStorage.setItem('filtered-movies', JSON.stringify(filteredMoviesCards))
+  }
 
   const handleRegister = (values, setButtonText, handleErrorText) => {
     setButtonText('Регистарция...')
@@ -99,6 +139,10 @@ function App() {
             <ProtectedRoute
               path="/movies"
               component={Movies}
+              cards={moviesCards}
+              onSubmit={handleSearchMovies}
+              isLoading={isMoviesLoadings}
+              errorMessage={moviesErrorMessage}
             />
 
             <ProtectedRoute

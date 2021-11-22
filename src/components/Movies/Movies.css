@@ -5,6 +5,14 @@
   margin: auto;
 }
 
+.movies_err-message {
+  text-align: center;
+  margin: 0;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 400;
+}
+
 .movies__button {
   cursor: pointer;
   display: block;
