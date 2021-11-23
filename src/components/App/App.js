@@ -53,7 +53,7 @@ function App() {
       moviesApi.getMovies()
         .then(res => localStorage.setItem('movies', JSON.stringify(res)))
         .then(() => handleSearchMoviesFromLocalStorage(values))
-        .then(() => setTimeout(() => localStorage.removeItem('movies'), 24 * 60 * 60 * 1000))
+        .then(() => setTimeout(() => localStorage.removeItem('movies'), 60 * 60 * 1000))
         .catch(() => setMoviesErrorMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'))
         .finally(() => setIsMoviesLoadings(false));
     }
