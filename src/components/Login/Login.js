@@ -34,7 +34,7 @@ function Login({ onLogin }) {
     e.preventDefault();
 
     setErrorText('');
-    
+
     onLogin(values, setButtonText, handleErrorText);
   };
 
@@ -49,7 +49,7 @@ function Login({ onLogin }) {
         linkText="Регистрация"
         linkPath="/sign-up"
       >
-        <label className="auth-form__label" for="email">E-mail</label>
+        <label className="auth-form__label" htmlFor="email">E-mail</label>
         <input
           className={`auth-form__input ${errors.email ? 'auth-form__input-err' : ''}`}
           onChange={handleChange}
@@ -60,7 +60,7 @@ function Login({ onLogin }) {
           required
         />
         <span className="auth-form__error-message">{errors.email}</span>
-        <label className="auth-form__label" for="password">Пароль</label>
+        <label className="auth-form__label" htmlFor="password">Пароль</label>
         <input
           className={`auth-form__input ${errors.password ? 'auth-form__input-err' : ''}`}
           onChange={handleChange}

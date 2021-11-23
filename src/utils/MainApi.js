@@ -50,6 +50,27 @@ class MainApi {
       credentials: 'include',
     }).then(res => this._checkAnswer(res));
   };
+
+  changeSaveMovieStatus(movie, isSaved) {
+    return isSaved ?
+      fetch(`${this._baseUrl}/movies/${movie.movieId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      }).then(res => this._checkAnswer(res))
+    :
+      fetch(`${this._baseUrl}/movies`, {
+        method: 'POST',
+        headers: this._headers,
+        body: JSON.stringify(movie),
+        credentials: 'include',
+      }).then(res => this._checkAnswer(res));
+  };
+
+  getSavedMovies() {
+    return fetch(`${this._baseUrl}/movies`, {
+      credentials: 'include',
+    }).then(res => this._checkAnswer(res));
+  }
 };
 
 const mainApi = new MainApi({

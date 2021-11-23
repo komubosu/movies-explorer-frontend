@@ -23,8 +23,10 @@ function App() {
   const [ isNavPopupOpen, setIsNavPopupOpen ] = React.useState(false);
   const [ currentUser, setCurrentUser ] = React.useState({});
   const [ moviesCards, setMoviesCards ] = React.useState([]);
+  const [ savedMoviesCards, setSavedMoviesCards ] =React.useState([]);
   const [ isMoviesLoadings, setIsMoviesLoadings ] = React.useState(false);
   const [ moviesErrorMessage, setMoviesErrorMessage ] = React.useState('');
+  const [ savedMoviesErrorMessage, setSavedMoviesErrorMessage ] = React.useState('');
   const history = useHistory();
   const { pathname } = useLocation();
 
@@ -33,21 +35,27 @@ function App() {
       .then(userData => setCurrentUser(userData))
       .then(() => setLoggedIn(true))
       .then(() => history.push('/movies'))
+      .then(() => {
+        mainApi.getSavedMovies()
+          .then(res => localStorage.setItem('saved-movies', JSON.stringify(res)))
+          .then(() => setSavedMoviesCards(JSON.parse(localStorage.getItem('saved-movies'))))
+          .catch(err => console.log(err));
+
+        if (localStorage.getItem('filtered-movies') !== null) {
+          const localFilteredMoviesCards = JSON.parse(localStorage.getItem('filtered-movies'));
+
+          setMoviesCards(localFilteredMoviesCards);
+        };
+      })
       .catch(err => console.log(err));
-
-    if (localStorage.getItem('filtered-movies') !== null) {
-      const localFilteredMoviesCards = JSON.parse(localStorage.getItem('filtered-movies'));
-
-      setMoviesCards(localFilteredMoviesCards);
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [loggedIn]);
 
   const handleSearchMovies = (values) => {
-    setMoviesErrorMessage('')
+    setMoviesErrorMessage('');
 
     if (localStorage.getItem('movies') !== null) {
-      handleSearchMoviesFromLocalStorage(values)
+      handleSearchMoviesFromLocalStorage(values);
     } else {
       setIsMoviesLoadings(true);
       moviesApi.getMovies()
@@ -56,7 +64,7 @@ function App() {
         .then(() => setTimeout(() => localStorage.removeItem('movies'), 60 * 60 * 1000))
         .catch(() => setMoviesErrorMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'))
         .finally(() => setIsMoviesLoadings(false));
-    }
+    };
   };
 
   const handleSearchMoviesFromLocalStorage = (values) => {
@@ -70,8 +78,32 @@ function App() {
       setMoviesErrorMessage('Ничего не найдено');
     };
 
-    localStorage.setItem('filtered-movies', JSON.stringify(filteredMoviesCards))
-  }
+    localStorage.setItem('filtered-movies', JSON.stringify(filteredMoviesCards));
+  };
+
+  const handleSearchSavedMovies = (values) => {
+    setSavedMoviesErrorMessage('');
+
+    const localSavedMoviesCards = JSON.parse(localStorage.getItem('saved-movies'));
+
+    const filteredSavedMoviesCards = moviesFilter(values, localSavedMoviesCards);
+
+    setSavedMoviesCards(filteredSavedMoviesCards);
+
+    if (filteredSavedMoviesCards.length === 0) {
+      setSavedMoviesErrorMessage('Ничего не найдено');
+    };
+  };
+
+  const handleSaveMovie = (movie, isSaved) => {
+    mainApi.changeSaveMovieStatus(movie, isSaved)
+      .then(() =>
+        mainApi.getSavedMovies()
+          .then(res => localStorage.setItem('saved-movies', JSON.stringify(res)))
+          .then(() => setSavedMoviesCards(JSON.parse(localStorage.getItem('saved-movies'))))
+          .catch(err => console.log(err))
+      ).catch(err => console.log(err));
+  };
 
   const handleRegister = (values, setButtonText, handleErrorText) => {
     setButtonText('Регистарция...')
@@ -98,6 +130,7 @@ function App() {
     mainApi.logout()
       .then(() => history.push('/'))
       .then(() => setLoggedIn(false))
+      .then(() => localStorage.clear())
       .catch(err => handleErrorText(err.status))
       .finally(setLogoutButtonText('Выйти из аккаунта'));
   };
@@ -144,11 +177,16 @@ function App() {
               onSubmit={handleSearchMovies}
               isLoading={isMoviesLoadings}
               errorMessage={moviesErrorMessage}
+              onSaveMovie={handleSaveMovie}
             />
 
             <ProtectedRoute
               path="/saved-movies"
               component={SavedMovies}
+              cards={savedMoviesCards}
+              onSubmit={handleSearchSavedMovies}
+              errorMessage={savedMoviesErrorMessage}
+              onSaveMovie={handleSaveMovie}
             />
 
             <ProtectedRoute

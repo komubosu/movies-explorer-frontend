@@ -5,6 +5,14 @@
   margin: auto;
 }
 
+.saved-movies_err-message {
+  text-align: center;
+  margin: 0;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 400;
+}
+
 @media screen and (max-width: 768px) {
   .saved-movies {
     padding: 60px 30px 140px;

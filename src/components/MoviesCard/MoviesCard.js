@@ -2,8 +2,15 @@ import React from 'react';
 import { useLocation } from 'react-router';
 import './MoviesCard.css';
 
-function MoviesCard({ card, isSaved, onSaveClick }) {
+function MoviesCard({ card, onSaveMovie }) {
   const { pathname } = useLocation();
+  const localSavedMoviesCards = JSON.parse(localStorage.getItem('saved-movies'));
+
+  const isSaved = localSavedMoviesCards.some(c => c.movieId === `${card.movieId}`)
+
+  const handleSaveMovie = () => {
+    onSaveMovie(card, isSaved)
+  }
 
   return(
     <li className="movies-card">
@@ -33,8 +40,11 @@ function MoviesCard({ card, isSaved, onSaveClick }) {
           :
             'movies-card__button'
         }
+        onClick={handleSaveMovie}
       ></button>
-      <img className="movies-card__img" src={`https://api.nomoreparties.co${card.image.url}`} alt="Обложка фильма"></img>
+      <a className="movies-card__link" href={card.trailer} target="_blank" rel="noreferrer">
+        <img className="movies-card__img" src={card.image} alt="Обложка фильма"></img>
+      </a>
     </li>
   );
 };

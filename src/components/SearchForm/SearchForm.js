@@ -22,7 +22,7 @@ function SearchForm({ onSubmit }) {
   return (
     <form className="search-form" onSubmit={handleSubmit}>
       <div className="search-form__field">
-        <input className="search-form__input" placeholder="Фильмы" defaultValue={values.words} onChange={handleChange} required />
+        <input className="search-form__input" placeholder="Фильмы" defaultValue={values.words} onChange={handleChange} />
         <button className="search-form__button"></button>
       </div>
       <p className="search-form__text">Короткометражки</p>

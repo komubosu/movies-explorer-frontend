@@ -5,7 +5,7 @@ import MoviesCard from '../MoviesCard/MoviesCard';
 import Preloader from '../Preloader/Preloader';
 import React from 'react';
 
-function Movies({ cards, onSubmit, isLoading, errorMessage }) {
+function Movies({ cards, onSubmit, isLoading, errorMessage, onSaveMovie }) {
   const [ cardsCount, setCardsCount ] = React.useState(12);
   const [ widthSize , setWidthSize ] = React.useState(0);
   const [ cardsCountScale, setCardsCountScale ] = React.useState(3);
@@ -62,7 +62,19 @@ function Movies({ cards, onSubmit, isLoading, errorMessage }) {
       :
         <MoviesCardList>
           {cards.slice(0, cardsCount).map(card => (
-              <MoviesCard key={card.id} card={card} />
+              <MoviesCard key={card.id} card={{
+                country: card.country,
+                director: card.director,
+                duration: card.duration,
+                year: card.year,
+                description: card.description,
+                image: `https://api.nomoreparties.co${card.image.url}`,
+                trailer: card.trailerLink,
+                thumbnail: `https://api.nomoreparties.co${card.image.formats.thumbnail.url}`,
+                movieId: card.id,
+                nameRU: card.nameRU,
+                nameEN: card.nameEN,
+              }} onSaveMovie={onSaveMovie} />
             ))}
         </MoviesCardList>
       }

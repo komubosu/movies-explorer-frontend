@@ -49,7 +49,7 @@ function Register({ onRegister }) {
         linkText="Войти"
         linkPath="/sign-in"
       >
-        <label className="auth-form__label" for="name">Имя</label>
+        <label className="auth-form__label" htmlFor="name">Имя</label>
         <input
           className={`auth-form__input ${errors.name ? 'auth-form__input-err' : ''}`}
           onChange={handleChange}
@@ -62,7 +62,7 @@ function Register({ onRegister }) {
           required
         />
         <span className="auth-form__error-message">{errors.name && 'Поле "Имя" может содержать только латиницу, кириллицу, пробел или дефис. '}{errors.name}</span>
-        <label className="auth-form__label" for="email">E-mail</label>
+        <label className="auth-form__label" htmlFor="email">E-mail</label>
         <input
           className={`auth-form__input ${errors.email ? 'auth-form__input-err' : ''}`}
           onChange={handleChange}
@@ -73,7 +73,7 @@ function Register({ onRegister }) {
           required
         />
         <span className="auth-form__error-message">{errors.email}</span>
-        <label className="auth-form__label" for="password">Пароль</label>
+        <label className="auth-form__label" htmlFor="password">Пароль</label>
         <input
           className={`auth-form__input ${errors.password ? 'auth-form__input-err' : ''}`}
           onChange={handleChange}

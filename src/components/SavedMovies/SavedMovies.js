@@ -3,14 +3,20 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
 import './SavedMovies.css';
 
-function SavedMovies(params) {
+function SavedMovies({ cards, onSubmit, errorMessage, onSaveMovie }) {
+  const handleSubmit = (values) => {
+
+    onSubmit(values);
+  };
+
   return (
     <section className="saved-movies">
-      <SearchForm />
+      <SearchForm onSubmit={handleSubmit} />
+      <p className="saved-movies_err-message">{errorMessage}</p>
       <MoviesCardList>
-        <MoviesCard key="1" isSaved={true} />
-        <MoviesCard key="2" isSaved={true} />
-        <MoviesCard key="3" isSaved={true} />
+          {cards.map(card => (
+              <MoviesCard key={card.movieId} card={card} onSaveMovie={onSaveMovie} />
+            ))}
       </MoviesCardList>
     </section>
   );

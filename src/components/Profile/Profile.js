@@ -60,7 +60,7 @@ function Profile({ onUpdateUser, onLogout }) {
       <form className="profile__form" onSubmit={handleSubmit} validate="true">
         <h1 className="profile__title">Привет, {values.name}!</h1>
         <div className="profile__input-field">
-          <label className="profile__label" for="name">Имя</label>
+          <label className="profile__label" htmlFor="name">Имя</label>
           <input
             className={`profile__input ${errors.name ? 'profile__input-err' : ''}`}
             onChange={handleChange}
@@ -75,7 +75,7 @@ function Profile({ onUpdateUser, onLogout }) {
         </div>
         <span className="profile__error-message">{errors.name && 'Поле "Имя" может содержать только латиницу, кириллицу, пробел или дефис. '}{errors.name}</span>
         <div className="profile__input-field">
-          <label className="profile__label" for="email">E-mail</label>
+          <label className="profile__label" htmlFor="email">E-mail</label>
           <input
             className={`profile__input ${errors.email ? 'profile__input-err' : ''}`}
             onChange={handleChange}
