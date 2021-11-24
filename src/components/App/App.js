@@ -108,7 +108,7 @@ function App() {
   const handleRegister = (values, setButtonText, handleErrorText) => {
     setButtonText('Регистарция...')
     mainApi.register(values)
-      .then(res => mainApi.login(res))
+      .then(() => mainApi.login(values))
       .then(() => setLoggedIn(true))
       .then(() => history.push('/movies'))
       .catch(err => handleErrorText(err.status))
