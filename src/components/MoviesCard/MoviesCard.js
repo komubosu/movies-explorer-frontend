@@ -4,9 +4,8 @@ import './MoviesCard.css';
 
 function MoviesCard({ card, onSaveMovie }) {
   const { pathname } = useLocation();
-  const localSavedMoviesCards = JSON.parse(localStorage.getItem('saved-movies'));
 
-  const isSaved = localSavedMoviesCards.some(c => c.movieId === `${card.movieId}`)
+  const isSaved = JSON.parse(localStorage.getItem('saved-movies')).some(c => c.movieId === `${card.movieId}`)
 
   const handleSaveMovie = () => {
     onSaveMovie(card, isSaved)
