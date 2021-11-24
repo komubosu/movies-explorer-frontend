@@ -91,7 +91,7 @@ function Profile({ onUpdateUser, onLogout }) {
         <span className="profile__status-message">{statusText}</span>
         <div className="profile__button-field">
           <button className={`profile__button ${isValid ? '' : 'profile__button-disabled'}`}disabled={!isValid}>{editButtonText}</button>
-          <button className="profile__button" onClick={() => onLogout(setLogoutButtonText, handleErrorText)}>{logoutButtonText}</button>
+          <button className="profile__button" type="button" onClick={() => onLogout(setLogoutButtonText, handleErrorText)}>{logoutButtonText}</button>
         </div>
       </form>
     </section>
