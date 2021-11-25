@@ -5,34 +5,40 @@ import './MoviesCard.css';
 function MoviesCard({ card, onSaveMovie }) {
   const { pathname } = useLocation();
 
-  const isSaved = JSON.parse(localStorage.getItem('saved-movies')).some(c => c.movieId === `${card.movieId}`)
+  const isSaved = JSON.parse(localStorage.getItem('saved-movies')).some(c => c.movieId === `${card.movieId}`);
 
   const handleFilterCard = () => {
     for (let i in card) {
       if (card[i] === null || card[i] === undefined) {
-        card[i] = ' ';
+        if (i === 'trailer') {
+          card[i] = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+        } else {
+          card[i] = ' ';
+        };
       };
     };
-  }
+    return card;
+  };
+
+  const filteredCard = handleFilterCard();
 
   const handleSaveMovie = () => {
-    handleFilterCard();
     onSaveMovie(card, isSaved)
   }
 
   return(
     <li className="movies-card">
       <div className="movies-card__text">
-        <p className="movies-card__title">{card.nameRU}</p>
+        <p className="movies-card__title">{filteredCard.nameRU}</p>
         <p className="movies-card__duration">
           {
-            `${Math.floor(card.duration / 60) >= 1 ?
-              `${Math.floor(card.duration / 60)} ч`
+            `${Math.floor(filteredCard.duration / 60) >= 1 ?
+              `${Math.floor(filteredCard.duration / 60)} ч`
                 :
               ''
               }
-            ${card.duration % 60 >= 1 ?
-              `${card.duration % 60} м`
+            ${filteredCard.duration % 60 >= 1 ?
+              `${filteredCard.duration % 60} м`
                 :
               ''
             }`
@@ -50,8 +56,8 @@ function MoviesCard({ card, onSaveMovie }) {
         }
         onClick={handleSaveMovie}
       ></button>
-      <a className="movies-card__link" href={card.trailer} target="_blank" rel="noreferrer">
-        <img className="movies-card__img" src={card.image} alt="Обложка фильма"></img>
+      <a className="movies-card__link" href={filteredCard.trailer} target="_blank" rel="noreferrer">
+        <img className="movies-card__img" src={filteredCard.image} alt="Обложка фильма"></img>
       </a>
     </li>
   );
