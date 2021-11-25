@@ -7,7 +7,16 @@ function MoviesCard({ card, onSaveMovie }) {
 
   const isSaved = JSON.parse(localStorage.getItem('saved-movies')).some(c => c.movieId === `${card.movieId}`)
 
+  const handleFilterCard = () => {
+    for (let i in card) {
+      if (card[i] === null || card[i] === undefined) {
+        card[i] = ' ';
+      };
+    };
+  }
+
   const handleSaveMovie = () => {
+    handleFilterCard();
     onSaveMovie(card, isSaved)
   }
 
