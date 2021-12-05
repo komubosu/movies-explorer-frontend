@@ -74,7 +74,7 @@ class MainApi {
 };
 
 const mainApi = new MainApi({
-  baseUrl: 'https://api.komubosu.films.nomoredomains.rocks',
+  baseUrl: 'http://localhost:3001',
   headers: {
     'Content-Type': 'application/json',
   },
