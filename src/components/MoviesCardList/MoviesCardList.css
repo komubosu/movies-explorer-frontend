@@ -12,7 +12,7 @@
   transition: grid-template .2s linear;
 }
 
-@media screen and (max-width: 890px) {
+@media screen and (max-width: 1000px) {
   .movies-card-list__cards {
     grid-template: repeat(auto-fit, 258px) / repeat(2, 1fr);
     gap: 36px 30px;

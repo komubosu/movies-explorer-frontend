@@ -2,14 +2,48 @@ import React from 'react';
 import { useLocation } from 'react-router';
 import './MoviesCard.css';
 
-function MoviesCard({isSaved, onSaveClick}) {
+function MoviesCard({ card, onSaveMovie }) {
   const { pathname } = useLocation();
+
+  const isSaved = JSON.parse(localStorage.getItem('saved-movies')).some(c => c.movieId === `${card.movieId}`);
+
+  const handleFilterCard = () => {
+    for (let i in card) {
+      if (card[i] === null || card[i] === undefined) {
+        if (i === 'trailer') {
+          card[i] = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+        } else {
+          card[i] = ' ';
+        };
+      };
+    };
+    return card;
+  };
+
+  const filteredCard = handleFilterCard();
+
+  const handleSaveMovie = () => {
+    onSaveMovie(card, isSaved)
+  }
 
   return(
     <li className="movies-card">
       <div className="movies-card__text">
-        <p className="movies-card__title">33 слова о дизайне</p>
-        <p className="movies-card__duration">1ч 47м</p>
+        <p className="movies-card__title">{filteredCard.nameRU}</p>
+        <p className="movies-card__duration">
+          {
+            `${Math.floor(filteredCard.duration / 60) >= 1 ?
+              `${Math.floor(filteredCard.duration / 60)} ч`
+                :
+              ''
+              }
+            ${filteredCard.duration % 60 >= 1 ?
+              `${filteredCard.duration % 60} м`
+                :
+              ''
+            }`
+          }
+        </p>
       </div>
       <button className={
           isSaved ?
@@ -20,8 +54,11 @@ function MoviesCard({isSaved, onSaveClick}) {
           :
             'movies-card__button'
         }
+        onClick={handleSaveMovie}
       ></button>
-      <img className="movies-card__img" src={'https://i04.fotocdn.net/s129/a10b0029563aa2e7/public_pin_l/2923413633.jpg'} alt="Обложка фильма"></img>
+      <a className="movies-card__link" href={filteredCard.trailer} target="_blank" rel="noreferrer">
+        <img className="movies-card__img" src={filteredCard.image} alt="Обложка фильма"></img>
+      </a>
     </li>
   );
 };
