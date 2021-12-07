@@ -1,18 +1,17 @@
 import { Link, useLocation } from 'react-router-dom';
+import { connect } from 'react-redux';
 import React from 'react';
 
-import { LoggedInContext } from '../../contexts/LoggedInContext';
 import './Header.css';
 import logo from '../../images/logo.svg';
 
-function Header({onMenuClick}) {
-  const LoggedIn = React.useContext(LoggedInContext);
+function Header({ onMenuClick, loggedIn }) {
   const { pathname } = useLocation();
 
   return (
     <header className={`header ${pathname === '/' ? '' : 'header_theme_grey'}`}>
       <Link to="/"><img src={logo} alt="Логотип"></img></Link>
-      {LoggedIn ?
+      {loggedIn ?
         <>
           <div>
             <Link className={`header__link ${pathname === '/movies' ? 'header__link_active' : ''}`} to="/movies">Фильмы</Link>
@@ -39,4 +38,10 @@ function Header({onMenuClick}) {
   );
 };
 
-export default Header
+const mapStateToProps = state => {
+  return {
+    loggedIn: state.loggedIn,
+  };
+};
+
+export default connect(mapStateToProps, null)(Header);

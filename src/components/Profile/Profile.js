@@ -1,10 +1,9 @@
 import React from 'react';
-import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { connect } from 'react-redux';
 import './Profile.css';
 
 
-function Profile({ onUpdateUser, onLogout }) {
-  const currentUser = React.useContext(CurrentUserContext);
+function Profile({ onUpdateUser, onLogout, currentUser }) {
   const [ editButtonText, setEditButtonText] = React.useState('Редактировать');
   const [ logoutButtonText, setLogoutButtonText] = React.useState('Выйти из аккаунта');
   const [ errorText, setErrorText ] = React.useState('');
@@ -98,4 +97,10 @@ function Profile({ onUpdateUser, onLogout }) {
   );
 };
 
-export default Profile;
+const mapStateToProps = state => {
+  return {
+    currentUser: state.user,
+  };
+};
+
+export default connect(mapStateToProps, null)(Profile);

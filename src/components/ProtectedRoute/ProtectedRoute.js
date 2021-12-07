@@ -1,9 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Route, Redirect } from "react-router-dom";
-import { LoggedInContext } from '../../contexts/LoggedInContext';
 
-const ProtectedRoute = ({component: Component, ...props}) => {
-  const loggedIn = React.useContext(LoggedInContext);
+const ProtectedRoute = ({component: Component, loggedIn, ...props}) => {
 
   return (
     <Route>
@@ -12,6 +11,12 @@ const ProtectedRoute = ({component: Component, ...props}) => {
       }
     </Route>
   )
-}
+};
 
-export default ProtectedRoute;
+const mapStateToProps = state => {
+  return {
+    loggedIn: state.loggedIn,
+  };
+};
+
+export default connect(mapStateToProps, null)(ProtectedRoute);

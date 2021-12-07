@@ -1,6 +1,7 @@
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
-import { LoggedInContext } from '../../contexts/LoggedInContext';
-import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { connect } from 'react-redux';
+
+import { updateUser, setLoggedInStatus } from '../../redux/actions';
 import './App.css';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
@@ -18,10 +19,8 @@ import mainApi from '../../utils/MainApi';
 import moviesApi from '../../utils/MoviesApi';
 import moviesFilter from '../../utils/MoviesFilter';
 
-function App() {
-  const [ loggedIn, setLoggedIn ] = React.useState(false);
+function App({ updateUser, setLoggedInStatus, loggedIn }) {
   const [ isNavPopupOpen, setIsNavPopupOpen ] = React.useState(false);
-  const [ currentUser, setCurrentUser ] = React.useState({});
   const [ moviesCards, setMoviesCards ] = React.useState([]);
   const [ savedMoviesCards, setSavedMoviesCards ] =React.useState([]);
   const [ isMoviesLoadings, setIsMoviesLoadings ] = React.useState(false);
@@ -32,8 +31,8 @@ function App() {
 
   React.useEffect(() => {
     mainApi.getUserData()
-      .then(userData => setCurrentUser(userData))
-      .then(() => setLoggedIn(true))
+      .then(userData => updateUser(userData))
+      .then(() => setLoggedInStatus(true))
       .then(() => history.push('/movies'))
       .then(() => {
         mainApi.getSavedMovies()
@@ -109,7 +108,7 @@ function App() {
     setButtonText('Регистарция...')
     mainApi.register(values)
       .then(() => mainApi.login(values))
-      .then(() => setLoggedIn(true))
+      .then(() => setLoggedInStatus(true))
       .then(() => history.push('/movies'))
       .catch(err => handleErrorText(err.status))
       .finally(() => setButtonText('Зарегистрироваться'));
@@ -118,8 +117,8 @@ function App() {
   const handleLogin = (values, setButtonText, handleErrorText) => {
     setButtonText('Вход...');
     mainApi.login(values)
-      .then(userData => setCurrentUser(userData))
-      .then(() => setLoggedIn(true))
+      .then(userData => updateUser(userData))
+      .then(() => setLoggedInStatus(true))
       .then(() => history.push('/movies'))
       .catch(err => handleErrorText(err.status))
       .finally(() => setButtonText('Войти'));
@@ -129,7 +128,7 @@ function App() {
     setLogoutButtonText('Выход...');
     mainApi.logout()
       .then(() => history.push('/'))
-      .then(() => setLoggedIn(false))
+      .then(() => setLoggedInStatus(false))
       .then(() => localStorage.clear())
       .catch(err => handleErrorText(err.status))
       .finally(setLogoutButtonText('Выйти из аккаунта'));
@@ -138,7 +137,7 @@ function App() {
   const handleUpdateUser = (values, setEditButtonText, setStatusText, handleErrorText) => {
     setEditButtonText('Сохранение...')
     mainApi.updateUserData(values)
-      .then(userData => setCurrentUser(userData))
+      .then(userData => updateUser(userData))
       .then(() => setStatusText('Данные успешно обновлены!'))
       .catch(err => handleErrorText(err.status))
       .finally(() => setEditButtonText('Редактировать'));
@@ -153,75 +152,77 @@ function App() {
   };
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <LoggedInContext.Provider value={loggedIn}>
-        <div className="app">
-          {
-            pathname === '/' ||
-            pathname === '/movies' ||
-            pathname === '/saved-movies' ||
-            pathname === '/profile' ?
-              <Header onMenuClick={handleNavPopupClick} />
-            :
-              ''
-          }
-          <Switch>
-            <Route exact path="/">
-              <Main />
-            </Route>
+    <div className="app">
+      {
+        pathname === '/' ||
+        pathname === '/movies' ||
+        pathname === '/saved-movies' ||
+        pathname === '/profile' ?
+          <Header onMenuClick={handleNavPopupClick} />
+        :
+          ''
+      }
+      <Switch>
+        <Route exact path="/">
+          <Main />
+        </Route>
 
-            <ProtectedRoute
-              path="/movies"
-              component={Movies}
-              cards={moviesCards}
-              onSubmit={handleSearchMovies}
-              isLoading={isMoviesLoadings}
-              errorMessage={moviesErrorMessage}
-              onSaveMovie={handleSaveMovie}
-            />
+        <ProtectedRoute
+          path="/movies"
+          component={Movies}
+          cards={moviesCards}
+          onSubmit={handleSearchMovies}
+          isLoading={isMoviesLoadings}
+          errorMessage={moviesErrorMessage}
+          onSaveMovie={handleSaveMovie}
+        />
 
-            <ProtectedRoute
-              path="/saved-movies"
-              component={SavedMovies}
-              cards={savedMoviesCards}
-              onSubmit={handleSearchSavedMovies}
-              errorMessage={savedMoviesErrorMessage}
-              onSaveMovie={handleSaveMovie}
-            />
+        <ProtectedRoute
+          path="/saved-movies"
+          component={SavedMovies}
+          cards={savedMoviesCards}
+          onSubmit={handleSearchSavedMovies}
+          errorMessage={savedMoviesErrorMessage}
+          onSaveMovie={handleSaveMovie}
+        />
 
-            <ProtectedRoute
-              path="/profile"
-              component={Profile}
-              onUpdateUser={handleUpdateUser}
-              onLogout={handleLogout}
-            />
+        <ProtectedRoute
+          path="/profile"
+          component={Profile}
+          onUpdateUser={handleUpdateUser}
+          onLogout={handleLogout}
+        />
 
-            <Route path="/sign-up">
-              <Register onRegister={handleRegister}/>
-            </Route>
+        <Route path="/sign-up">
+          <Register onRegister={handleRegister}/>
+        </Route>
 
-            <Route path="/sign-in">
-              <Login onLogin={handleLogin}/>
-            </Route>
+        <Route path="/sign-in">
+          <Login onLogin={handleLogin}/>
+        </Route>
 
-            <Route>
-              <NotFoundPage />
-            </Route>
-          </Switch>
-          {
-            pathname === '/' ||
-            pathname === '/movies' ||
-            pathname === '/saved-movies' ?
-              <Footer />
-            :
-              ''
-          }
+        <Route>
+          <NotFoundPage />
+        </Route>
+      </Switch>
+      {
+        pathname === '/' ||
+        pathname === '/movies' ||
+        pathname === '/saved-movies' ?
+          <Footer />
+        :
+          ''
+      }
 
-          <NavPopup isOpen={isNavPopupOpen} onClose={closeNavPopupPopup} />
-        </div>
-      </LoggedInContext.Provider>
-    </CurrentUserContext.Provider>
+      <NavPopup isOpen={isNavPopupOpen} onClose={closeNavPopupPopup} />
+    </div>
   );
 };
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    loggedIn: state.loggedIn,
+  };
+};
+
+export default connect(mapStateToProps, { updateUser, setLoggedInStatus})(App);

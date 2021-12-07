@@ -1,0 +1,3 @@
+export const UPDATE_USER = 'UPDATE_USER';
+
+export const SET_LOGGED_IN_STATUS = 'SET_LOGGED_IN_STATUS';
