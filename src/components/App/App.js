@@ -1,5 +1,5 @@
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { updateUser, setLoggedInStatus } from '../../redux/actions';
 import './App.css';
@@ -19,20 +19,23 @@ import mainApi from '../../utils/MainApi';
 import moviesApi from '../../utils/MoviesApi';
 import moviesFilter from '../../utils/MoviesFilter';
 
-function App({ updateUser, setLoggedInStatus, loggedIn }) {
+function App() {
   const [ isNavPopupOpen, setIsNavPopupOpen ] = React.useState(false);
   const [ moviesCards, setMoviesCards ] = React.useState([]);
   const [ savedMoviesCards, setSavedMoviesCards ] =React.useState([]);
   const [ isMoviesLoadings, setIsMoviesLoadings ] = React.useState(false);
   const [ moviesErrorMessage, setMoviesErrorMessage ] = React.useState('');
   const [ savedMoviesErrorMessage, setSavedMoviesErrorMessage ] = React.useState('');
+
+  const dispatch = useDispatch();
+  const loggedIn = useSelector(state => state.loggedIn)
   const history = useHistory();
   const { pathname } = useLocation();
 
   React.useEffect(() => {
     mainApi.getUserData()
-      .then(userData => updateUser(userData))
-      .then(() => setLoggedInStatus(true))
+      .then(userData => dispatch(updateUser(userData)))
+      .then(() => dispatch(setLoggedInStatus(true)))
       .then(() => history.push('/movies'))
       .then(() => {
         mainApi.getSavedMovies()
@@ -108,7 +111,7 @@ function App({ updateUser, setLoggedInStatus, loggedIn }) {
     setButtonText('Регистарция...')
     mainApi.register(values)
       .then(() => mainApi.login(values))
-      .then(() => setLoggedInStatus(true))
+      .then(() => dispatch(setLoggedInStatus(true)))
       .then(() => history.push('/movies'))
       .catch(err => handleErrorText(err.status))
       .finally(() => setButtonText('Зарегистрироваться'));
@@ -117,8 +120,8 @@ function App({ updateUser, setLoggedInStatus, loggedIn }) {
   const handleLogin = (values, setButtonText, handleErrorText) => {
     setButtonText('Вход...');
     mainApi.login(values)
-      .then(userData => updateUser(userData))
-      .then(() => setLoggedInStatus(true))
+      .then(userData => dispatch(updateUser(userData)))
+      .then(() => dispatch(setLoggedInStatus(true)))
       .then(() => history.push('/movies'))
       .catch(err => handleErrorText(err.status))
       .finally(() => setButtonText('Войти'));
@@ -128,7 +131,7 @@ function App({ updateUser, setLoggedInStatus, loggedIn }) {
     setLogoutButtonText('Выход...');
     mainApi.logout()
       .then(() => history.push('/'))
-      .then(() => setLoggedInStatus(false))
+      .then(() => dispatch(setLoggedInStatus(false)))
       .then(() => localStorage.clear())
       .catch(err => handleErrorText(err.status))
       .finally(setLogoutButtonText('Выйти из аккаунта'));
@@ -137,7 +140,7 @@ function App({ updateUser, setLoggedInStatus, loggedIn }) {
   const handleUpdateUser = (values, setEditButtonText, setStatusText, handleErrorText) => {
     setEditButtonText('Сохранение...')
     mainApi.updateUserData(values)
-      .then(userData => updateUser(userData))
+      .then(userData => dispatch(updateUser(userData)))
       .then(() => setStatusText('Данные успешно обновлены!'))
       .catch(err => handleErrorText(err.status))
       .finally(() => setEditButtonText('Редактировать'));
@@ -219,10 +222,4 @@ function App({ updateUser, setLoggedInStatus, loggedIn }) {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    loggedIn: state.loggedIn,
-  };
-};
-
-export default connect(mapStateToProps, { updateUser, setLoggedInStatus})(App);
+export default (App);

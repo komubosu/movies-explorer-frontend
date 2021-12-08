@@ -1,11 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import React from 'react';
 
 import './Header.css';
 import logo from '../../images/logo.svg';
 
-function Header({ onMenuClick, loggedIn }) {
+function Header({ onMenuClick }) {
+  const loggedIn = useSelector(state => state.loggedIn)
   const { pathname } = useLocation();
 
   return (
@@ -38,10 +39,4 @@ function Header({ onMenuClick, loggedIn }) {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    loggedIn: state.loggedIn,
-  };
-};
-
-export default connect(mapStateToProps, null)(Header);
+export default (Header);

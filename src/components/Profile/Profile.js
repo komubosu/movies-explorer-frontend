@@ -1,9 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import './Profile.css';
 
 
-function Profile({ onUpdateUser, onLogout, currentUser }) {
+function Profile({ onUpdateUser, onLogout }) {
   const [ editButtonText, setEditButtonText] = React.useState('Редактировать');
   const [ logoutButtonText, setLogoutButtonText] = React.useState('Выйти из аккаунта');
   const [ errorText, setErrorText ] = React.useState('');
@@ -11,6 +11,8 @@ function Profile({ onUpdateUser, onLogout, currentUser }) {
   const [ values, setValues ] = React.useState({});
   const [ errors, setErrors ] = React.useState({});
   const [ isValid, setIsValid ] = React.useState(true);
+
+  const currentUser = useSelector(state => state.user)
 
   React.useEffect(() => {
     setValues(currentUser);
@@ -97,10 +99,4 @@ function Profile({ onUpdateUser, onLogout, currentUser }) {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    currentUser: state.user,
-  };
-};
-
-export default connect(mapStateToProps, null)(Profile);
+export default (Profile);
